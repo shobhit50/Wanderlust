@@ -1,0 +1,71 @@
+<% layout("layouts/boilerplate") -%>
+
+
+
+    <body>
+
+
+
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h3>Edit Listing</h3>
+                <form action="/listings/Edit/<%=allListings._id %>?_method=PUT" method="POST" novalidate
+                    class="needs-validation">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" value="<%=allListings.title %>" placeholder="Title"
+                            name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="text" class="form-control" placeholder="Image link/url" name="image"
+                            value="<%=allListings.image %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" placeholder="Description" name="description" cols="10" rows="5"
+                            required><%=allListings.description %></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" class="form-control" value="<%=allListings.price %>"
+                                placeholder="Price" name="price" required>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" class="form-control" value="<%=allListings.country %>"
+                                placeholder="Country" name="country" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" value="<%=allListings.location %>"
+                            placeholder="Location" name="location" required>
+                    </div>
+                    <button class="btn btn-dark">Add</button>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </body>
+
+
+
+
+    <!-- we are use this aproche also -->
+
+    <!-- <input type="text" value="<=allListings.title %>" name="listing[title]">
+        <br><br>
+        <input type="text" value="<allListings.image %>" name="listing[image]">
+        <br><br>
+        <textarea name="listing[description]" id="" cols="30" rows="10"><=allListings.description %></textarea> 
+-->

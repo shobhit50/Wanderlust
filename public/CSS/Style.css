@@ -1,0 +1,106 @@
+.navbar {
+    margin-left: 0px;
+    /* margin-bottom: 16px; */
+}
+
+.nav-link {
+    color: #000000 !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.continer {
+    flex: 1;
+    /* margin-left: 57px; */
+    margin-top: 34px;
+
+    /* Adjust as needed based on your layout */
+
+}
+
+.fa-compass {
+    font-size: 2rem;
+    color: #fe424d;
+}
+
+.card {
+
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.row a {
+    text-decoration: none;
+    width: 20rem;
+    margin-right: 20px;
+}
+
+.btn {
+    width: 5rem !important;
+}
+
+/* card effect */
+
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.2;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+
+
+
+
+.btn {
+    background-color: #000000 !important;
+    border: none !important;
+}
+
+.show-btn {
+    background-color: #fe424d !important;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #3c3c3c !important;
+
+}
+
+.show-btn:hover {
+    background-color: #cc343e !important;
+}
+
+
+
+
+.row {
+    --bs-gutter-x: 0.rem !important;
+}
+
+.show-img {
+    object-fit: cover !important;
+    height: 46vh !important;
+    /* width: 40rem !important; */
+    border-radius: 0.5rem !important;
+}
+
+/* delete btn */
+.delete-btn {
+    display: flex;
+}

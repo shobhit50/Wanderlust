@@ -1,0 +1,64 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllListing</title>
+</head> -->
+
+
+
+
+<% layout("layouts/boilerplate") -%>
+
+    <body>
+
+        <!-- <form method="GET" action="/listings/new">
+            <button>Create New Listing</button>
+        </form> -->
+
+
+        <h3>All Listing</h3>
+        <div class="row row-cols-lg-3 row-cols-lg-2 row-cols-lg-1" style="    justify-content: center;">
+
+            <% for(let listing of allListings) { %>
+
+                <a href="/listings/<%= listing._id %>">
+                    <div class="card" style="width: 20rem; border: none;
+                margin-right: 20px;">
+
+                        <img class="card-img-top" style="    border-radius: 1.5em;
+                    object-fit: cover; height: 20rem;" src=<%=listing.image %> alt="Card image cap">
+                        <div class="card-img-overlay">absd</div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b>
+                                    <%= listing.title %>
+                                </b>
+                                <br>
+
+                                <% if (listing.price !==null && typeof listing.price==='number' ) { %>
+                                    ₹<%= listing.price.toLocaleString("en-in") %> / night
+                                        <% } else { %>
+                                            Price Not Available
+                                            <% } %>
+
+
+
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <% } %>
+        </div>
+
+
+
+
+
+
+    </body>
+
+    <!-- </html> -->

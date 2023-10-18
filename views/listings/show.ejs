@@ -1,0 +1,45 @@
+<% layout("layouts/boilerplate") -%>
+
+    <body>
+        <div class="row">
+            <div class="col-md-8  offset-md-3 offset-sm-5">
+                <h2>Listing</h2>
+                <div class="card " style="width: 39vw; border: none; margin-bottom: 2rem;">
+                    <img src=<%=allListings.image %> class="card-img-top show-img img-fluid" alt="..." >
+                    <div class="card-body" style="
+                    padding-left: 0px;
+                ">
+                        <h5 class="card-title">
+                            <%= allListings.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= allListings.description %>
+                        </p>
+                        <p>
+                            <% if (allListings.price !==null && typeof allListings.price==='number' ) { %>
+                                ₹<%= allListings.price.toLocaleString("en-in") %> / night
+                                    <% } else { %>
+                                        Price Not Available
+                                        <% } %>
+                                            <br>
+                                            <%= allListings.location %> <br>
+                                                <%= allListings.country %>
+                        </p>
+
+                        <div class="delete-btn">
+                            <a href="/listings/Edit/<%= allListings._id %>" method="GET"
+                                class="btn btn-primary show-btn">Edit</a>
+                            <form action="/listings/<%= allListings._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </body>
