@@ -54,7 +54,7 @@ To run this project locally, follow these steps:
    npm start
    ```
 
-5. Open your web browser and visit `http://localhost:3000` to access the app.
+5. Open your web browser and visit `http://localhost:8080` to access the app.
 
 ## Usage
 
