@@ -28,7 +28,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/wunderlust.git
+   git clone https://github.com/shobhit50/wunderlust.git
    cd wunderlust
    ```
 
@@ -45,7 +45,7 @@ To run this project locally, follow these steps:
    ```env
    PORT=3000
    MONGODB_URI=mongodb://localhost/wunderlust
-   SECRET_KEY=yoursecretkey
+   SECRET_KEY= ??
    ```
 
 4. Start the development server:
