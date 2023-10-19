@@ -81,6 +81,21 @@ app.get("/listings/new", (req, res) => {
 });
 
 // Create Route
+app.put("/listings/new", wrapAsync(async (req, res) => {
+    try {
+        let data = req.body;
+        const newListing = new listing(data);
+        await newListing.save().catch(err => console.log(err));
+        res.redirect("/listings");
+
+    } catch (error) {
+        next(error)
+
+    }
+
+}));
+
+
 // const port = process.env.PORT || 8080;
 
 
