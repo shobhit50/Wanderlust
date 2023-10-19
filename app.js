@@ -8,17 +8,32 @@ const ejsmate = require("ejs-mate");
 const wrapAsync = require("./utill/wrapAsync.js");
 const ExpressEroor = require("./utill/expressErorr.js");
 
+const port = process.env.PORT || 3001;
+const dbpass = process.env.DB_PASS || "";
 
 // data_Base Conection
-main().then((res) => {
-    console.log("connected to DB");
-})
-    .catch(err => console.log(err));
+// main().then((res) => {
+//     console.log("connected to DB");
+// })
+//     .catch(err => console.log(err));
+
+// async function main() {
+//     await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
+// }
+
+
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
+    const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
+    await mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    console.log('Connected to MongoDB Atlas');
 }
 
+main().catch((err) => console.log(err));
 
 
 app.set("view engine", "ejs");
@@ -66,19 +81,7 @@ app.get("/listings/new", (req, res) => {
 });
 
 // Create Route
-app.put("/listings/new", wrapAsync(async (req, res) => {
-    try {
-        let data = req.body;
-        const newListing = new listing(data);
-        await newListing.save().catch(err => console.log(err));
-        res.redirect("/listings");
-
-    } catch (error) {
-        next(error)
-
-    }
-
-}));
+// const port = process.env.PORT || 8080;
 
 
 // -----------------------------------------------------------------//
@@ -156,6 +159,8 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(8080, () => {
-    console.log("Server is started successfully");
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
+
+
