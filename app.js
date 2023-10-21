@@ -7,6 +7,8 @@ const methodOverride = require("method-override");
 const ejsmate = require("ejs-mate");
 const wrapAsync = require("./utill/wrapAsync.js");
 const ExpressEroor = require("./utill/expressErorr.js");
+const Review = require("./models/reviews.js");
+
 
 const port = process.env.PORT || 3001;
 const dbpass = process.env.DB_PASS || "";
@@ -105,7 +107,7 @@ app.put("/listings/new", wrapAsync(async (req, res) => {
 // Show Route
 app.get("/listings/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let allListings = await listing.findById(id);
+    let allListings = await listing.findById(id).populate("rewiews");
     res.render("listings/show.ejs", { allListings });
 }));
 
@@ -153,13 +155,41 @@ app.put("/listings/Edit/:id", wrapAsync(async (req, res, next) => {
 // Delete Route
 app.delete("/listings/:id", wrapAsync(async (req, res) => {
     const { id } = req.params
-
     console.log(id);
     let deletedListing = await listing.findByIdAndDelete(id);
-
     console.log(deletedListing);
     res.redirect("/listings");
 }));
+
+// this is for review route and delete route----------------------------------//
+// rating Route
+
+app.post("/listings/:id/reviews", wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const review = new Review(req.body.review);
+
+    const Alllisting = await listing.findById(id);
+
+
+    Alllisting.rewiews.push(review);
+    await review.save();
+    await Alllisting.save();
+    console.log(review);
+
+    // res.send("ok");
+    res.redirect(`/listings/${id}`);
+}
+));
+
+// delete route
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    await listing.findByIdAndUpdate(id, { $pull: { rewiews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
+}
+));
+// -----------------------------------------------------------------//
 
 
 
