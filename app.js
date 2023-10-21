@@ -64,7 +64,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 // Root_Path
 app.get("/", (req, res) => {
-    res.send("new home page")
+    res.send('<h3>hello im root</h3> <br> <form action="/listings"><button>go all listing</button></form>')
 }
 );
 
