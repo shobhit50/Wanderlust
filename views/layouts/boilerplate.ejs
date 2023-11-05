@@ -16,7 +16,11 @@
 
 <body>
     <%- include("../includes/navBar.ejs") %>
-        <div class="continer"><%- body -%></div>
+        <div class="continer">
+            <%- include("../includes/flash.ejs") %>
+
+                <%- body -%>
+        </div>
 
         <%- include("../includes/footer.ejs") %>
 

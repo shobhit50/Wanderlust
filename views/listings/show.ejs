@@ -12,6 +12,12 @@
                         <h5 class="card-title">
                             <%= allListings.title %>
                         </h5>
+                        <!-- this is for user detiles -->
+                        <p>
+                            ownerBy <%= allListings.owner.username %>
+                        </p>
+
+                        <!--             -->
                         <p class="card-text">
                             <%= allListings.description %>
                         </p>
@@ -25,7 +31,6 @@
                                             <%= allListings.location %> <br>
                                                 <%= allListings.country %>
                         </p>
-
                         <div class="delete-btn">
                             <a href="/listings/Edit/<%= allListings._id %>" method="GET"
                                 class="btn btn-primary show-btn">Edit</a>
@@ -33,8 +38,6 @@
                                 <button type="submit" class="btn btn-primary">Delete</button>
                             </form>
                         </div>
-
-
                     </div>
                 </div>
 
