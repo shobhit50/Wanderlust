@@ -8,36 +8,47 @@ const ejsmate = require("ejs-mate");
 const wrapAsync = require("./utill/wrapAsync.js");
 const ExpressEroor = require("./utill/expressErorr.js");
 const Review = require("./models/reviews.js");
+const cookiesParser = require("cookie-parser");
+
+const listings = require("./routes/listings.js");// this is for listing route
+const reviews = require("./routes/reviews.js"); // this is for review route
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const User = require("./models/user.js");        // this is for user model
+const userRoutes = require("./routes/user.js");  // this is for user route
+
 
 
 const port = process.env.PORT || 3001;
 const dbpass = process.env.DB_PASS || "";
 
 // data_Base Conection
-// main().then((res) => {
-//     console.log("connected to DB");
-// })
-//     .catch(err => console.log(err));
-
-// async function main() {
-//     await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
-// }
-
-
+main().then((res) => {
+    console.log("connected to DB");
+})
+    .catch(err => console.log(err));
 
 async function main() {
-    const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
-    await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-
-    console.log('Connected to MongoDB Atlas');
+    await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
 }
 
-main().catch((err) => console.log(err));
 
 
+// async function main() {
+//     const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
+//     await mongoose.connect(uri, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     });
+
+//     console.log('Connected to MongoDB Atlas');
+// }
+
+// main().catch((err) => console.log(err));
+
+app.use(cookiesParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -45,6 +56,52 @@ app.use(methodOverride('_method'));
 app.engine("ejs", ejsmate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+
+const sessionOptions = {
+    secret: "thisisnotagoodsecrate",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1000ms * 60sec * 60min * 24hr * 7days
+        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    }
+
+}
+
+// Root_Path
+app.get("/", (req, res) => {
+    console.log(req.cookies.username);
+    res.cookie("name", "shobhit");
+    res.send('<h3>hello im root</h3> <br> <form action="/listings"><button>go all listing</button></form>')
+}
+);
+
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+
+// passport config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
+    next();
+});
+
+app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
+app.use("/", userRoutes);
 
 
 // testing data
@@ -60,135 +117,9 @@ app.use(express.static(path.join(__dirname, "/public")));
 //     // console.log(samplelisting);
 // })
 
-
-
-// Root_Path
-app.get("/", (req, res) => {
-    res.send('<h3>hello im root</h3> <br> <form action="/listings"><button>go all listing</button></form>')
-}
-);
-
-// index Route
-app.get("/listings", wrapAsync(async (req, res, next) => {
-    const allListings = await listing.find({});
-    res.render("listings/index.ejs", { allListings });
-}));
-
-// -----------------------------------------------------------------//
-
-
-//New Route
-app.get("/listings/new", (req, res) => {
-    res.render("listings/new.ejs");
-});
-
-// Create Route
-app.put("/listings/new", wrapAsync(async (req, res) => {
-    try {
-        let data = req.body;
-        const newListing = new listing(data);
-        await newListing.save().catch(err => console.log(err));
-        res.redirect("/listings");
-
-    } catch (error) {
-        next(error)
-
-    }
-
-}));
-
-
-// const port = process.env.PORT || 8080;
-
-
-// -----------------------------------------------------------------//
-
-
-// Show Route
-app.get("/listings/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let allListings = await listing.findById(id).populate("rewiews");
-    res.render("listings/show.ejs", { allListings });
-}));
-
-
-
-// -----------------------------------------------------------------//
-
-// Edit Route
-app.get("/listings/Edit/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let allListings = await listing.findById(id);
-    res.render("listings/Edit.ejs", { allListings });
-}));
-
-//UPdate route
-
-app.put("/listings/Edit/:id", wrapAsync(async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        let data = req.body;
-        let allListings = await listing.findByIdAndUpdate(id, data);
-
-        if (!allListings) {
-            throw new ExpressError(404, "Resource not found");
-        }
-        res.render("listings/show.ejs", { allListings });
-    } catch (err) {
-        next(err);
-    }
-}));
-
-
-// app.put("/listings/Edit/:id", warpAsync(async (req, res) => {
-//     let { id } = req.params;
-//     let data = req.body;
-//     let allListings = await listing.findByIdAndUpdate(id, data);
-//     console.log({ allListings });
-//     res.render("listings/show.ejs", { allListings });
-
-// }));
-
-// -----------------------------------------------------------------//
-
-
-// Delete Route
-app.delete("/listings/:id", wrapAsync(async (req, res) => {
-    const { id } = req.params
-    console.log(id);
-    let deletedListing = await listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listings");
-}));
-
 // this is for review route and delete route----------------------------------//
-// rating Route
+// rating 
 
-app.post("/listings/:id/reviews", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const review = new Review(req.body.review);
-
-    const Alllisting = await listing.findById(id);
-
-
-    Alllisting.rewiews.push(review);
-    await review.save();
-    await Alllisting.save();
-    console.log(review);
-
-    // res.send("ok");
-    res.redirect(`/listings/${id}`);
-}
-));
-
-// delete route
-app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await listing.findByIdAndUpdate(id, { $pull: { rewiews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/listings/${id}`);
-}
-));
 // -----------------------------------------------------------------//
 
 
