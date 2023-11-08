@@ -4,6 +4,7 @@ const User = require("../models/user.js");
 const wrapAsync = require("../utill/wrapAsync.js");
 const passport = require("passport");
 const { redirect } = require("../miderware.js");
+const { compile } = require("ejs-mate");
 
 
 
@@ -40,6 +41,7 @@ router.get("/login", (req, res) => {
 
 router.post("/login", redirect, passport.authenticate("local", { failureFlash: true, failureRedirect: "/login" }), async (req, res) => {
     req.flash("success", "Welcome back");
+    console.log(res.locals.redirect + "this is redirect");
     res.redirect(res.locals.redirect || "/listings");
 });
 
