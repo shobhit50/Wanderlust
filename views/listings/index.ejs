@@ -8,7 +8,127 @@
 </head> -->
 
 
+<style>
+    .rap2 {
+        width: 100%;
 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.134);
+
+    }
+
+    .rap {
+        width: 100%;
+        max-width: 87.4vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filters {
+
+        /* margin-top: 50px; */
+        /* width: 60vw; */
+        /* margin-top: 50px; */
+        padding: 1rem 40px 1rem 40px;
+        display: inline-flex;
+        overflow-x: auto;
+        align-items: center;
+        /* justify-content: center; */
+
+
+
+        overflow-x: auto;
+    }
+
+
+    @media screen and (max-width: 768px) {
+        .filters {
+            width: 100vw;
+            padding: 1rem 0.5rem 1rem 0.5rem;
+            display: flex;
+
+        }
+
+        .rap {
+
+            display: flex;
+            flex-direction: column;
+            padding: 0px;
+        }
+
+        .ms-auto {
+            margin-left: 0 !important;
+        }
+
+        #navbar-1 {
+            display: none;
+        }
+
+        #nav-item {
+            align-items: flex-start !important;
+        }
+
+
+    }
+
+    .filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 2rem;
+        /* border: 1px solid black; */
+    }
+
+    .filter {
+        opacity: 0.5;
+
+    }
+
+    .filter.active {
+        opacity: 1;
+    }
+
+    .filter:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .filter:active {
+        color: red;
+    }
+
+    .filter p {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .text-togule {
+        border: 1px solid black;
+        border-radius: 15px;
+        height: 3.25rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-switch {
+        width: max-content;
+    }
+
+    #Link {
+        text-decoration: none;
+        font-size: 0.8rem;
+        color: black;
+    }
+</style>
 
 <% layout("layouts/boilerplate") -%>
 
@@ -17,10 +137,110 @@
         <!-- <form method="GET" action="/listings/new">
             <button>Create New Listing</button>
         </form> -->
+        <div class="rap2">
+            <div class="rap">
 
 
-        <h3>All Listing</h3>
-        <div class="row row-cols-lg-3 row-cols-lg-2 row-cols-lg-1" style="    justify-content: center;">
+                <div class="filters ">
+                    <div class="filter " id="Filter">
+                        <div><i class="fa-solid fa-fire "></i></div>
+                        <a href="/Search/city" id="Link">Trending</a>
+                        <!-- <p style=" margin: 0;">Trending</p> -->
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+                        <a href="/Search/beach" id="Link">Beach</a>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-regular fa-snowflake"></i></div>
+                        <a href="/Search/Arctic" id="Link">Arctic</a>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-mountain-city"></i></div>
+                        <a href="/Search/mountain" id="Link">mountains</a>
+                        <!-- <p style="margin: 0;">mountains</p> -->
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-campground"></i></div>
+                        <a href="/Search/camping" id="Link">Camping</a>
+                        <!-- <p style="margin: 0;">Camping</p> -->
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-key"></i></div>
+                        <a href="/Search/new" id="Link">New</a>
+                        <!-- <p style="margin: 0;">New</p> -->
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tractor"></i></div>
+                        <p style="margin: 0;">Farms</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tree-city"></i></div>
+                        <a href="/Search/botes" id="Link">Botes</a>
+                        <!-- <p style="margin: 0;">Botes</p> -->
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-ship"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+
+                    <!-- 22222222 -->
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tractor"></i></div>
+                        <p style="margin: 0;">Farms</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tree-city"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-ship"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tractor"></i></div>
+                        <p style="margin: 0;">Farms</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tree-city"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-ship"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tractor"></i></div>
+                        <p style="margin: 0;">Farms</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-tree-city"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <div class="filter" id="Filter">
+                        <div><i class="fa-solid fa-ship"></i></div>
+                        <p style="margin: 0;">Botes</p>
+                    </div>
+                    <!-- 222222 -->
+
+                </div>
+                <div class="text-togule ms-auto">
+                    <div class="form-check-reverse form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Display total before taxes</label>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="row row-cols-lg-3 row-cols-lg-2 row-cols-lg-1 mt-5" style="  justify-content: center;">
 
             <% for(let listing of allListings) { %>
 
@@ -29,7 +249,7 @@
                 margin-right: 20px;">
 
                         <img class="card-img-top" style="    border-radius: 1.5em;
-                    object-fit: cover; height: 20rem;" src=<%=listing.image %> alt="Card image cap">
+                    object-fit: cover; height: 20rem;" src=<%=listing.image.url %> alt="Card image cap">
                         <div class="card-img-overlay">absd</div>
                         <div class="card-body">
                             <p class="card-text">
@@ -57,7 +277,53 @@
 
 
 
+        <script>
 
+            const filters = document.querySelectorAll(".filter");
+            const currentPath = window.location.pathname;
+
+            // when icon click autometic link click
+            filters.forEach((filter) => {
+                const link = filter.querySelector("a");
+                filter.addEventListener("click", () => {
+                    console.log("It's working for 5555");
+                    link.click();
+                });
+            });
+
+            //  this is for add active class after refresh page
+            filters.forEach((filter) => {
+                const linkElement = filter.querySelector("a");
+                const filterPath = new URL(linkElement.href).pathname;
+
+                if (currentPath === filterPath) {
+                    console.log("It's working for", filterPath);
+                    filter.classList.add("active");
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+            // when icon click autometic link click
+            // const Filter = document.getElementById('Filter');
+            // const Link = document.getElementById('Link');
+
+            // // Add a click event listener to the filter
+            // Filter.addEventListener('click', () => {
+            //     // Simulate a click on the link when the filter is clicked
+            //     Link.click();
+            // });
+
+
+
+        </script>
 
     </body>
 

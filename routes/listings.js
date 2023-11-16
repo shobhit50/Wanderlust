@@ -5,7 +5,10 @@ const path = require("path");
 const wrapAsync = require("../utill/wrapAsync.js");
 const ExpressEroor = require("../utill/expressErorr.js");
 const Review = require("../models/reviews.js");
-const { logedIn } = require("../miderware.js");
+const { logedIn, isOwner } = require("../miderware.js");
+const multer = require("multer");
+const { storage } = require("../coludinaryConfig.js");
+const upload = multer({ storage });
 
 
 // app.use((req, res, next) => {
@@ -32,11 +35,15 @@ router.get("/new", logedIn, (req, res) => {
 });
 
 // Create Route
-router.put("/new", logedIn, wrapAsync(async (req, res) => {
+router.put("/new", logedIn, upload.single('image'), wrapAsync(async (req, res) => {
     try {
+
+        let { path, filename } = req.file;
         let data = req.body;
         const newListing = new listing(data);
         newListing.owner = req.user._id;
+        newListing.image.url = path;
+        newListing.image.filename = filename;
 
         await newListing.save().catch(err => console.log(err));
         req.flash("success", "Successfully made a new listing!");
@@ -46,6 +53,7 @@ router.put("/new", logedIn, wrapAsync(async (req, res) => {
         next(error)
 
     }
+    console.log(req.file);
 
 }));
 
@@ -59,22 +67,27 @@ router.put("/new", logedIn, wrapAsync(async (req, res) => {
 // Show Route
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let allListings = await listing.findById(id).populate("rewiews").populate("owner");
+    let allListings = await listing.findById(id).populate({ path: "rewiews", populate: "auther" }).populate("owner");
     if (!allListings) {
         req.flash("error", "Cannot find that listing!");
         res.redirect("/listings");
     }
-    console.log(allListings);
+    // console.log(allListings);
     res.render("listings/show.ejs", { allListings });
 }));
+
+// -----------------------------------------------------------------//
+
+
 
 
 
 // -----------------------------------------------------------------//
 
 // Edit Route
-router.get("/Edit/:id", logedIn, wrapAsync(async (req, res) => {
+router.get("/Edit/:id", logedIn, isOwner, upload.single('image'), wrapAsync(async (req, res) => {
     let { id } = req.params;
+
     let allListings = await listing.findById(id);
     if (!allListings) {
         req.flash("error", "Cannot find that listing!");
@@ -85,13 +98,23 @@ router.get("/Edit/:id", logedIn, wrapAsync(async (req, res) => {
 
 //UPdate route
 
-router.put("/Edit/:id", logedIn, wrapAsync(async (req, res, next) => {
+router.put("/Edit/:id", logedIn, isOwner, upload.single('image'), wrapAsync(async (req, res, next) => {
     try {
         let { id } = req.params;
         let data = req.body;
+
+        console.dir(req.body);
+        // this is the new image 
         let allListings = await listing.findByIdAndUpdate(id, data);
+        console.log({ allListings });
         if (!allListings) {
             throw new ExpressError(404, "Resource not found");
+        }
+        if (typeof req.file !== "undefined") {
+            let { path, filename } = req.file;
+            allListings.image.url = path;
+            allListings.image.filename = filename;
+            await allListings.save();
         }
         res.render("listings/show.ejs", { allListings });
     } catch (err) {
@@ -113,7 +136,7 @@ router.put("/Edit/:id", logedIn, wrapAsync(async (req, res, next) => {
 
 
 // Delete Route
-router.delete("/:id", logedIn, wrapAsync(async (req, res) => {
+router.delete("/:id", logedIn, isOwner, wrapAsync(async (req, res) => {
     const { id } = req.params
     // console.log(id);
     let deletedListing = await listing.findByIdAndDelete(id);

@@ -6,31 +6,44 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <a class="nav-link " aria-current="page" href="/">Home</a>
-                </li>
+            <ul class="navbar-nav" style="width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" href="/listings">All Listing</a>
+                    <a class="nav-link" href="/listings">Explore</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/listings/new">Add New Listing</a>
+                <li class="nav-item navbar-nav ms-auto">
+                    <!-- <div class="navbar-nav ms-auto" id="navbar-1"> -->
+
                 </li>
+                <li class="nav-item navbar-nav ms-auto" id="nav-item" style="align-items: center;">
+                    <% if(currUser) {%>
+                        <p style="margin-bottom: 0px!important;">hello <%=currUser.username %>
+                        </p>
+                        <% } %>
+                            <a class="nav-link" href="/listings/new">Airbnb your home</a>
+                            <% if (!currUser) {%>
+                                <a class="nav-link " aria-current="page" href="/singup"> <b>SingUp</b></a>
+                                <a class="nav-link" href="/login"> <b>Login</b></a>
+                                <% } %>
+
+
+
+
+                                    <% if(currUser) {%>
+
+                                        <a class="nav-link" href="/logout"><b></b>LogOut</a>
+                                        <% } %>
+
+
+                </li>
+
             </ul>
         </div>
-        <div class="navbar-nav ms-auto">
-            <% if (!currUser) {%>
-                <a class="nav-link " aria-current="page" href="/singup">SingUp</a>
-                <a class="nav-link" href="/login">Login</a>
-                <% } %>
+        <!--  -->
 
 
-
-
-                    <% if(currUser) {%>
-                        <p style="margin-top: 0.5rem;">hello <%=currUser.username %>
-                        </p>
-                        <a class="nav-link" href="/logout">LogOut</a>
-                        <% } %>
+        <!--  -->
+        <div class="navbar-nav ms-auto" id="navbar-1" style="    align-items: center;
+    ">
 
         </div>
     </div>

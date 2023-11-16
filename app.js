@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -24,29 +28,29 @@ const userRoutes = require("./routes/user.js");  // this is for user route
 const port = process.env.PORT || 3001;
 const dbpass = process.env.DB_PASS || "";
 
-// // data_Base Conection
-// main().then((res) => {
-//     console.log("connected to DB");
-// })
-//     .catch(err => console.log(err));
-
-// async function main() {
-//     await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
-// }
-
-
+// data_Base Conection
+main().then((res) => {
+    console.log("connected to DB");
+})
+    .catch(err => console.log(err));
 
 async function main() {
-    const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
-    await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-
-    console.log('Connected to MongoDB Atlas');
+    await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
 }
 
-main().catch((err) => console.log(err));
+
+
+// async function main() {
+//     const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
+//     await mongoose.connect(uri, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     });
+
+//     console.log('Connected to MongoDB Atlas');
+// }
+
+// main().catch((err) => console.log(err));
 
 app.use(cookiesParser());
 app.set("view engine", "ejs");
@@ -121,6 +125,26 @@ app.use("/", userRoutes);
 // rating 
 
 // -----------------------------------------------------------------//
+
+app.get("/Search/:category", async (req, res) => {
+    try {
+        const category = req.params.category; // Access the 'category' property
+        console.log(category);
+
+        const allListings = await listing.find({ category: category });
+        res.render("listings/index.ejs", { allListings });
+
+        // console.log("All Listings:", allListings);
+        console.log("All Listings2:");
+
+        // Uncomment the following line if you want to send the listings as a JSON response
+        // res.status(200).json(allListings);
+    } catch (error) {
+        console.error("Error fetching city listings:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 
 
 

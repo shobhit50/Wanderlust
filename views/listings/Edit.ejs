@@ -10,17 +10,21 @@
             <div class="col-8 offset-2">
                 <h3>Edit Listing</h3>
                 <form action="/listings/Edit/<%=allListings._id %>?_method=PUT" method="POST" novalidate
-                    class="needs-validation">
+                    class="needs-validation" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" value="<%=allListings.title %>" placeholder="Title"
                             name="title" required>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="text" class="form-control" placeholder="Image link/url" name="image"
-                            value="<%=allListings.image %>" required>
+                        <p>Preview Image</p>
+                        <img style="height: 6vw;" src="<%=allListings.image.url %>" alt="">
                     </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Uplod new Image</label>
+                        <input type="file" class="form-control" placeholder="Image link/url" name="image">
+                    </div>
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <textarea class="form-control" placeholder="Description" name="description" cols="10" rows="5"
