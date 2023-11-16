@@ -33,12 +33,43 @@ module.exports.isOwner = async (req, res, next) => {
 };
 
 
+module.exports.isOwner = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        let listing = await Listing.findById(id);
+
+        if (!listing) {
+            req.flash("error", "Listing not found");
+            return res.redirect("/listings"); // Adjust the redirect URL as needed
+        }
+
+        if (req.user.isAdmin || listing.owner.equals(req.user._id)) {
+            return next();
+        }
+
+        req.flash("error", "You don't have permission to do that!");
+        return res.redirect(`/listings/${id}`);
+    } catch (err) {
+        console.error(err);
+        req.flash("error", "Something went wrong");
+        return res.redirect(`/listings/${id}`); // Adjust the redirect URL as needed
+    }
+};
+
+
+
+
+
+
 module.exports.isReviewAuther = async (req, res, next) => {
     const { id, reviewId } = req.params;
     let review = await Review.findById(reviewId);
-    if (!review.auther.equals(req.user._id)) {
-        req.flash("error", "You don't have permission to do that!");
-        return res.redirect(`/listings/${id}`);
+    if (req.user.isAdmin || review.auther.equals(req.user._id)) {
+        return next();
     }
-    next();
+    req.flash("error", "You don't have permission to do that!");
+    return res.redirect(`/listings/${id}`);
+
 }
+
