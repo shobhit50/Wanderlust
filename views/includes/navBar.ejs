@@ -1,3 +1,72 @@
+<!-- <style>
+    .drop {
+        cursor: pointer;
+        margin-bottom: 0px !important;
+        /* transition: all 5s ease-in; */
+    }
+
+    .dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        /* right: 0; */
+        background-color: #e7e7e7;
+        padding: 10px;
+        z-index: 1;
+
+        /* transition: all 5s ease-in; */
+
+        width: 6rem;
+        height: 6rem;
+        border-radius: 0.7rem;
+
+
+    }
+
+    .drop:hover+.dropdown {
+
+        /* display: block; */
+
+
+    }
+
+    .navdrop {
+        display: none;
+    }
+
+
+
+    /* .navbar-nav:nth-child(2) {
+        order: 1;
+    } */
+
+    @media screen and (max-width: 767px) {
+        /* .drop:hover+.dropdown {
+            display: none;
+        } */
+
+        .navdrop2 {
+            display: none;
+        }
+
+        .navdrop {
+            display: block;
+        }
+
+        .navbar-nav>div:nth-child(2) {
+            order: 1;
+        }
+
+        .navbar-nav>li:nth-child(1) {
+            order: 2;
+        }
+
+        .navbar-nav>li:nth-child(3) {
+            order: 3;
+        }
+
+    }
+</style> -->
 <nav class="navbar navbar-expand-md bg-body-tertiary  border-bottom sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
@@ -6,32 +75,61 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" style="width: 100%;">
+            <ul class="navbar-nav" style="width: 100%; align-items: center;">
                 <li class="nav-item">
                     <a class="nav-link" href="/listings">Explore</a>
                 </li>
-                <li class="nav-item navbar-nav ms-auto">
-                    <!-- <div class="navbar-nav ms-auto" id="navbar-1"> -->
+                <!-- <li class="nav-item navbar-nav ms-auto">
+                    <div class="navbar-nav ms-auto" id="navbar-1">
 
-                </li>
-                <li class="nav-item navbar-nav ms-auto" id="nav-item" style="align-items: center;">
+                </li> -->
+                <div class="navdrop">
                     <% if(currUser) {%>
-                        <p style="margin-bottom: 0px!important;">hello <%=currUser.username %>
+                        <p class="drop"><i class="fa-regular fa-circle-user"></i>
+                            <%=currUser.username %>
                         </p>
+
                         <% } %>
-                            <a class="nav-link" href="/listings/new">Airbnb your home</a>
-                            <% if (!currUser) {%>
-                                <a class="nav-link " aria-current="page" href="/singup"> <b>SingUp</b></a>
-                                <a class="nav-link" href="/login"> <b>Login</b></a>
-                                <% } %>
+                </div>
+                <li class="nav-item navbar-nav ms-auto" id="nav-item" style="align-items: center;">
+
+                    <!--  -->
 
 
 
-
-                                    <% if(currUser) {%>
-
+                    <!--  -->
+                    <a class="nav-link" href="/listings/new">Airbnb your home</a>
+                    <% if (!currUser) {%>
+                        <a class="nav-link " aria-current="page" href="/singup"> <b>SingUp</b></a>
+                        <a class="nav-link" href="/login"> <b>Login</b></a>
+                        <% } %>
+                            <!--  -->
+                            <div class="navdrop2">
+                                <% if(currUser) {%>
+                                    <p class="drop" onclick="toggleDropdown('userDropdown')"><i
+                                            class="fa-regular fa-circle-user"></i>
+                                        <%=currUser.username %>
+                                    </p>
+                                    <div class="dropdown" id="userDropdown">
+                                        <a class="nav-link" href="/listings/new">Airbnb your home</a>
+                                        <hr>
                                         <a class="nav-link" href="/logout"><b></b>LogOut</a>
-                                        <% } %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <!--  -->
+                            <div class="navdrop">
+                                <% if(currUser) {%>
+
+                                    <a class="nav-link" href="/logout"><b></b>LogOut</a>
+
+                                    <% } %>
+                            </div>
+
+
+
+
+
 
 
                 </li>
@@ -48,3 +146,27 @@
         </div>
     </div>
 </nav>
+
+
+
+<script>
+
+    function toggleDropdown(dropdownId) {
+        var dropdown = document.getElementById(dropdownId);
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+    // this is for the dropdown menu close when click outside
+    document.addEventListener('click', function (event) {
+        var dropdown = document.getElementById('userDropdown');
+        var triggerElement = document.querySelector('.navdrop2');
+
+        if (!triggerElement.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+    // -----------------------------------------------
+</script>
