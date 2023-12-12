@@ -8,7 +8,7 @@
 </head> -->
 
 
-<style>
+<!-- <style>
     .rap2 {
         width: 100%;
 
@@ -21,7 +21,7 @@
 
     .rap {
         width: 100%;
-        max-width: 87.4vw;
+        max-width: 90%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -44,35 +44,6 @@
     }
 
 
-    @media screen and (max-width: 768px) {
-        .filters {
-            width: 100vw;
-            padding: 1rem 0.5rem 1rem 0.5rem;
-            display: flex;
-
-        }
-
-        .rap {
-
-            display: flex;
-            flex-direction: column;
-            padding: 0px;
-        }
-
-        .ms-auto {
-            margin-left: 0 !important;
-        }
-
-        #navbar-1 {
-            display: none;
-        }
-
-        #nav-item {
-            align-items: flex-start !important;
-        }
-
-
-    }
 
     .filters::-webkit-scrollbar {
         display: none;
@@ -110,6 +81,8 @@
     }
 
     .text-togule {
+
+        margin: auto !important;
         border: 1px solid black;
         border-radius: 15px;
         height: 3.25rem;
@@ -128,7 +101,64 @@
         font-size: 0.8rem;
         color: black;
     }
-</style>
+
+    .listingdata {
+        justify-content: center;
+        /* align-items: center; */
+        /* margin: auto; */
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    @media screen and (max-width: 696px) {
+        .row a {
+            width: clamp(19rem, 90vw, 38rem) !important;
+            margin-right: 0px !important;
+        }
+
+        .card {
+            width: clamp(19rem, 90vw, 38rem) !important;
+            margin: 0 !important;
+        }
+
+        .text-togule {
+            display: none;
+        }
+
+    }
+
+    @media screen and (max-width: 767px) {
+        .filters {
+            width: 100vw;
+            padding: 1rem 0.5rem 1rem 0.5rem;
+            display: flex;
+
+        }
+
+        .rap {
+
+            display: flex;
+            flex-direction: column;
+            padding: 0px;
+        }
+
+        .ms-auto {
+            margin-left: 0 !important;
+        }
+
+        #navbar-1 {
+            display: none;
+        }
+
+        #nav-item {
+            align-items: flex-start !important;
+        }
+
+
+    }
+</style> -->
 
 <% layout("layouts/boilerplate") -%>
 
@@ -137,6 +167,8 @@
         <!-- <form method="GET" action="/listings/new">
             <button>Create New Listing</button>
         </form> -->
+        <!-- -------------------------------------------------------------- -->
+
         <div class="rap2">
             <div class="rap">
 
@@ -205,7 +237,7 @@
                         <div><i class="fa-solid fa-tree-city"></i></div>
                         <p style="margin: 0;">Botes</p>
                     </div>
-                    <div class="filter" id="Filter">
+                    <!-- <div class="filter" id="Filter">
                         <div><i class="fa-solid fa-ship"></i></div>
                         <p style="margin: 0;">Botes</p>
                     </div>
@@ -220,74 +252,93 @@
                     <div class="filter" id="Filter">
                         <div><i class="fa-solid fa-ship"></i></div>
                         <p style="margin: 0;">Botes</p>
-                    </div>
+                    </div> -->
                     <!-- 222222 -->
 
                 </div>
                 <div class="text-togule ms-auto">
                     <div class="form-check-reverse form-switch">
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Display total before taxes</label>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Display total taxes</label>
                     </div>
                 </div>
 
 
             </div>
         </div>
-
-
+        <!-- ------------------------------------------------------------------------------- -->
 
 
 
 
         <div class="row row-cols-lg-3 row-cols-lg-2 row-cols-lg-1 mt-5" style="  justify-content: center;">
+            <div class="listingdata">
 
-            <% for(let listing of allListings) { %>
+                <% for(let listing of allListings) { %>
 
-                <a href="/listings/<%= listing._id %>">
-                    <div class="card" style="width: 20rem; border: none;
+                    <a href="/listings/<%= listing._id %>">
+                        <div class="card" style="width: 20rem; border: none;
                 margin-right: 20px;">
 
-                        <img class="card-img-top" style="    border-radius: 1.5em;
-                    object-fit: cover; height: 20rem;" src=<%=listing.image.url %> alt="Card image cap">
-                        <div class="card-img-overlay">absd</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                <b>
-                                    <%= listing.title %>
-                                </b>
-                                <br>
-
-                                <% if (listing.price !==null && typeof listing.price==='number' ) { %>
-                                    ₹<%= listing.price.toLocaleString("en-in") %> / night
-                                        <% } else { %>
-                                            Price Not Available
-                                            <% } %>
-
-
-
-                            </p>
+                            <img class="card-img-top" style="    border-radius: 1.5em;
+                    object-fit: cover; height: 20rem; border-radius: 0.5em;" src=<%=listing.image.url %> alt="Card
+                            image cap">
+                            <div class="card-img-overlay">absd</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>
+                                        <%= listing.title %>
+                                    </b>
+                                    <br>
+                                    <span style="display: flex;">
+                                        <% if (listing.price !==null && typeof listing.price==='number' ) { %>
+                                            ₹<%= listing.price.toLocaleString("en-in") %> / night
+                                                <i class="taxe-icon">&nbsp; +18%taxe</i>
+                                                <% } else { %>
+                                                    Price Not Available
+                                                    <% } %>
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
 
-                <% } %>
+                    <% } %>
+            </div>
         </div>
 
 
 
-
+        <!-- ----------------------------------------------- -->
         <script>
+
 
             const filters = document.querySelectorAll(".filter");
             const currentPath = window.location.pathname;
 
             // when icon click autometic link click
+            let checkbox = document.getElementById("flexSwitchCheckDefault");
+
+
+            checkbox.addEventListener("click", () => {
+                let taxe = document.getElementsByClassName("taxe-icon");
+                console.log("It's working for 5555", taxe);
+                for (info of taxe) {
+                    info.style.display = "block";
+                    if (checkbox.checked == false) {
+                        info.style.display = "none";
+                    }
+
+                }
+            });
+
+            // when icon click autometic link click
+
             filters.forEach((filter) => {
                 const link = filter.querySelector("a");
                 filter.addEventListener("click", () => {
                     console.log("It's working for 5555");
-                    link.click();
+                    // link.click();
                 });
             });
 
@@ -301,6 +352,12 @@
                     filter.classList.add("active");
                 }
             });
+
+
+
+
+
+
 
 
 

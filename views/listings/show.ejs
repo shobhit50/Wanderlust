@@ -1,69 +1,361 @@
 <% layout("layouts/boilerplate") -%>
 
-    <body>
-        <div class="row">
-            <div class="col-md-8  offset-md-3 offset-sm-5">
-                <h2>Listing</h2>
-                <div class="card " style="width: 39vw; border: none; margin-bottom: 2rem;">
-                    <img src=<%=allListings.image.url %> class="card-img-top show-img img-fluid" alt="..." >
-                    <div class="card-body" style="
-                    padding-left: 0px;
-                ">
-                        <h5 class="card-title">
-                            <%= allListings.title %>
-                        </h5>
-                        <!-- this is for user detiles -->
-                        <p>
-                            ownerBy <%= allListings.owner.username %>
-                        </p>
+    <!-- <style>
+        .Show_page {
+            margin: auto;
+            max-width: 1024px;
+            padding: 2rem;
+        }
 
-                        <!--             -->
-                        <p class="card-text">
-                            <%= allListings.description %>
-                        </p>
-                        <p>
-                            <% if (allListings.price !==null && typeof allListings.price==='number' ) { %>
-                                ₹<%= allListings.price.toLocaleString("en-in") %> / night
-                                    <% } else { %>
-                                        Price Not Available
-                                        <% } %>
-                                            <br>
-                                            <%= allListings.location %> <br>
-                                                <%= allListings.country %>
-                        </p>
-                        <!-- -------------------------------------------------------- -->
-                        <% if (currUser && (allListings.owner._id.equals(currUser._id) || currUser.isAdmin)){ %>
-                            <div class="delete-btn">
-                                <a href="/listings/Edit/<%= allListings._id %>" method="GET"
-                                    class="btn btn-primary show-btn">Edit</a>
-                                <form action="/listings/<%= allListings._id %>?_method=DELETE" method="POST">
-                                    <button type="submit" class="btn btn-primary">Delete</button>
-                                </form>
+        .Show_page h2 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: clamp(16px, 2.5vw, 2rem);
+        }
+
+        .page_continar {
+            margin: auto;
+            width: auto;
+            /* max-width: 30rem; */
+        }
+
+        .img_box {
+            display: flex;
+        }
+
+        .img_1 {
+            width: 100%;
+        }
+
+        .img_2 {
+            width: 20%;
+        }
+
+        .img_box2 {
+            max-height: 26rem;
+            height: 40vw !important;
+            margin-left: 0.2rem;
+            gap: 0.2rem;
+            /* height: 46vh; */
+            flex-direction: column;
+            display: flex;
+            /* height: auto; */
+            width: 50%;
+        }
+
+
+
+        .box_img {
+            object-fit: cover;
+            overflow: hidden;
+            height: 50%;
+            width: 100%;
+            /* border-radius: 0 0.5rem 0.5rem 0; */
+        }
+
+        .price_card {
+            border: 1px solid rgba(0, 0, 0, 0)55, 255, 255;
+        }
+
+        .data_continer {
+            gap: 3rem;
+            padding-top: 2rem;
+            display: flex;
+        }
+
+        .price_card {
+            min-width: 15rem;
+            border-radius: 1rem;
+            flex-direction: column;
+            display: flex;
+            box-shadow: 0 3px 18px 0px #00000033;
+            height: fit-content;
+            width: 30%;
+            padding: 0.8rem;
+        }
+
+        .data_continer p {
+            color: #000000b8 !important;
+            /* margin-top: 1rem;
+            font-size: 1.5rem; */
+        }
+
+        .page_data2 {
+            align-items: baseline;
+            gap: 2rem;
+            display: flex;
+        }
+
+        .review {
+            margin: auto;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1024px;
+        }
+
+        .review_Continer {
+            gap: 2rem;
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .rating {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reviewData {
+            max-width: 20rem;
+            margin-right: 2.5rem;
+            width: 39%;
+        }
+
+        .Review_input {
+            width: 100%;
+            max-width: 1024px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        @media screen and (max-width: 600px) {
+            .data_continer {
+                flex-direction: column;
+            }
+
+            .img_box {
+                flex-direction: column;
+            }
+
+            .img_box2 {
+                display: none;
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .img_1 {
+
+                width: 100%;
+            }
+
+            .img_1 img {
+                border-radius: 0.5rem !important;
+            }
+
+            .img_2 {
+                width: 100%;
+            }
+
+            .page_data {
+                width: 100%;
+            }
+
+            .price_card {
+                margin: auto;
+                max-width: 20rem;
+                width: 100%;
+            }
+
+            .reviewData {
+                flex-direction: column;
+                display: flex;
+                margin-right: 0;
+                max-width: 20rem;
+                flex: 0 0 auto;
+                border-radius: 0.5rem;
+                border: 1px solid black;
+                padding: 0.5rem;
+                width: 100%;
+            }
+
+            .review_Continer {
+                flex-wrap: nowrap;
+                gap: 2rem;
+                margin-top: 2rem;
+                display: flex;
+                overflow-x: auto;
+
+            }
+
+            .delete-btn {
+                gap: 1rem;
+                justify-content: left;
+                display: flex;
+            }
+
+            .rating {
+                height: 100%;
+                /* display: flex;
+                flex-direction: column; */
+            }
+
+            .review_Continer::-webkit-scrollbar {
+                display: none;
+            }
+
+            @media screen and (max-width: 400px) {
+                .Show_page {
+                    padding: 0.6rem;
+                }
+
+                .show-img {
+                    height: 56vw !important;
+                }
+            }
+
+        }
+    </style> -->
+
+
+
+
+
+
+
+    <body>
+        <div class="Show_page">
+            <div>
+                <h2>
+                    <%= allListings.title %>
+                </h2>
+                <div class="page_continar">
+                    <div class="img_box">
+                        <div class="img_1"><img src=<%=allListings.image.url %> class="card-img-top show-img img-fluid"
+                            alt="..." ></div>
+                        <!-- --------------------------------------------------------------------- -->
+                        <div class="img_box2">
+                            <img src=<%=allListings.image.url %> class="box_img"
+                            alt="..." style="
+                            border-radius: 0 0.5rem 0 0 !important;
+                            ">
+                            <img src=<%=allListings.image.url %> class="box_img"
+                            alt="..." style="border-radius: 0 0 0.5rem 0 !important;">
+                        </div>
+                        <!-- --------------------------------------------------------------------- -->
+
+                    </div>
+
+                    <div class="data_continer">
+                        <div class="page_data">
+                            <h5>
+                                <%= allListings.title %>
+                            </h5>
+                            <hr>
+                            <!-- this is for user detiles -->
+                            <p>
+                                <i class="fa-regular fa-circle-user"></i> Hosted by <%= allListings.owner.username %>
+                            </p>
+                            <hr>
+                            <div>
+                                <div class="page_data2">
+                                    <div><i class="fa-solid fa-location-dot" style="    font-size: clamp(16px, 2.5vw, 1.5rem);
+                                        color: #fe424d;"></i></div>
+                                    <div>
+                                        <h3>Great location</h3>
+                                        <p>93% of recent guests gave the location a 5-star rating.</p>
+                                    </div>
+                                </div>
+                                <div class="page_data2">
+                                    <div><i class="fa-solid fa-key" style="    font-size: clamp(16px, 2.5vw, 1.5rem);
+                                        color: #fe424d;"></i></div>
+                                    <div>
+                                        <h3>Great check-in experience
+                                        </h3>
+                                        <p>100% of recent guests gave the check-in process a 5-star rating.
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
-                            <% } %>
-                                <!-- ---------------------------------------------------------------------- -->
+
+                            <br>
+
+
+                            <!--             -->
+                            <hr>
+                            <p>
+                                <%= allListings.description %>
+                            </p>
+                        </div>
+                        <!--------- price card ------------->
+                        <div class="price_card">
+                            <h3>
+                                <% if (allListings.price !==null && typeof allListings.price==='number' ) { %>
+                                    ₹<%= allListings.price.toLocaleString("en-in") %> / night
+                                        <% } else { %>
+                                            Price Not Available
+                                            <% } %>
+                            </h3>
+
+
+                            <!-- <i class="fa-solid fa-map-pin"></i> -->
+                            <p>
+                                <%= allListings.location %>,&nbsp;
+                                    <%= allListings.country %>
+
+
+                            </p>
+                            <p style="margin: 0;">18% tax +
+                            </p>
+                            <hr>
+                            <h6>Total After taxes &nbsp; &nbsp; &nbsp; &nbsp;
+                                ₹<%= (allListings.price*(18/100)+allListings.price).toLocaleString("en-in") %>
+                            </h6>
+                            <!-- -------------------------------------------------------- -->
+                            <% if (currUser && (allListings.owner._id.equals(currUser._id) || currUser.isAdmin)){ %>
+                                <div class="delete-btn">
+                                    <a href="/listings/Edit/<%= allListings._id %>" method="GET"
+                                        class="btn btn-primary show-btn">Edit</a>
+                                    <form action="/listings/<%= allListings._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </div>
+                                <% } %>
+                        </div>
+
+                        <!-- ---------------------------------------------------------------------- -->
                     </div>
                 </div>
 
             </div>
+
         </div>
 
-        <hr>
+
 
         <% if(currUser) {%>
-            <div class="col-md-8  offset-md-3 offset-sm-5">
+            <hr>
+            <div class="Review_input">
                 <h3 class="mb-3">Leave a Review</h3>
 
                 <form action="/listings/<%= allListings._id %>/reviews" method="POST" novalidate
                     class="needs-validation">
                     <div class="mb-3">
-                        <label for="range" class="form-label">Rating</label>
-                        <input type="range" name="review[rating]" min="1" max="5">
+                        <!-- <label for="range" class="form-label">Rating</label>
+                        <input type="range" name="review[rating]" min="1" max="5"> -->
+
+                        <!-- ------- rating -------------------------------------------------->
+                        <fieldset class="starability-slot">
+                            <legend>Rating:</legend>
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0"
+                                checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
                     </div>
+                    <!-- emd -->
                     <div class="mb-3">
                         <label for="comment" class="form-label">comment</label>
-                        <textarea name="review[comment]" class="form-control" id="" cols="30" rows="5"
-                            required></textarea>
+                        <textarea name="review[comment]" class="form-control" id="" cols="30" rows="5" required
+                            style="max-width: 30rem"></textarea>
                         <div class="invalid-feedback">
                             Please leave a comment.
                         </div>
@@ -75,41 +367,44 @@
                 </form>
 
             </div>
-            <hr>
+
             <% } %>
+                <div class="review">
+                    <hr>
 
-                <h3 class="mb-3 col-md-8  offset-md-3 ">All Review</h3>
-                <div class="row offset-md-3 offset-sm-5">
-                    <% for (let review of allListings.rewiews) { %>
+                    <h3 class="">All Review</h3>
+                    <div class="review_Continer">
+                        <% for (let review of allListings.rewiews) { %>
 
-                        <div class="card text-white bg-secondary mb-3 col-md-8 ml-3"
-                            style="max-width: 18rem; margin-right: 2.5rem;">
-                            <div class="card-header">
-                                <%= review.auther.username %>
+                            <div class="reviewData">
+                                <div class="">
+                                    <i class="fa-regular fa-circle-user"
+                                        style="font-size: clamp(21px, 2.5vw, 2rem);"></i>
+                                    <%= review.auther.username %>
+
+                                </div>
+                                <hr>
+                                <div class="review[rating]">
+                                    <h6>
+                                        Rating <%= review.rating %>
+                                    </h6>
+                                    <p class="starability-result" data-rating=<%=review.rating %>>
+                                    </p>
+
+                                    <p class="">
+                                        <%= review.comment %>
+                                    </p>
+                                </div>
+                                <form action="/listings/<%= allListings._id %>/reviews/<%=review._id%>?_method=DELETE"
+                                    method="post">
+                                    <button type="submit" class="btn btn-primary mb-3">Delete</button>
+                                </form>
 
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%= review.rating %>
-                                </h5>
-                                <p class="card-text">
-                                    <%= review.comment %>
-                                        Some quick example text to build on the card title and make up
-                                        the bulk
-                                        of
-                                        the
-                                        card's content.
-                                </p>
-                            </div>
-                            <form action="/listings/<%= allListings._id %>/reviews/<%=review._id%>?_method=DELETE"
-                                method="post">
-                                <button type="submit" class="btn btn-primary mb-3"
-                                    style="margin-left: 1rem;">Delete</button>
-                            </form>
 
-                        </div>
+                            <% } %>
+                    </div>
 
-                        <% } %>
                 </div>
 
 
