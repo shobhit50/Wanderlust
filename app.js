@@ -73,11 +73,7 @@ const sessionOptions = {
 
 }
 
-// Root_Path
-app.get("/", wrapAsync(async (req, res, next) => {
-    const allListings = await listing.find({});
-    res.render("listings/index.ejs", { allListings });
-}));
+
 
 
 app.use(session(sessionOptions));
@@ -101,6 +97,11 @@ app.use((req, res, next) => {
     next();
 });
 
+// Root_Path
+app.get("/", wrapAsync(async (req, res, next) => {
+    const allListings = await listing.find({});
+    res.render("listings/index.ejs", { allListings });
+}));
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 app.use("/", userRoutes);
