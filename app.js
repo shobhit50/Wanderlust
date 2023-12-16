@@ -74,12 +74,10 @@ const sessionOptions = {
 }
 
 // Root_Path
-app.get("/", (req, res) => {
-    console.log(req.cookies.username);
-    res.cookie("name", "shobhit");
-    res.send('<h3>hello im root</h3> <br> <form action="/listings"><button>go all listing</button></form>')
-}
-);
+app.get("/", wrapAsync(async (req, res, next) => {
+    const allListings = await listing.find({});
+    res.render("listings/index.ejs", { allListings });
+}));
 
 
 app.use(session(sessionOptions));
