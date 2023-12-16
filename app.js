@@ -73,13 +73,7 @@ const sessionOptions = {
 
 }
 
-// Root_Path
-app.get("/", (req, res) => {
-    console.log(req.cookies.username);
-    res.cookie("name", "shobhit");
-    res.send('<h3>hello im root</h3> <br> <form action="/listings"><button>go all listing</button></form>')
-}
-);
+
 
 
 app.use(session(sessionOptions));
@@ -103,6 +97,12 @@ app.use((req, res, next) => {
     next();
 });
 
+// Root_Path
+app.get("/", wrapAsync(async (req, res, next) => {
+    const allListings = await listing.find({});
+    res.render("listings/index.ejs", { allListings });
+})
+);
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 app.use("/", userRoutes);
