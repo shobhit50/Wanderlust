@@ -127,6 +127,10 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.134);
+    background-color: white;
+    z-index: 1;
+    position: sticky;
+    top: 3.7rem;
 }
 
 .rap {
@@ -203,6 +207,11 @@ body {
     color: black;
 }
 
+#Explore {
+    display: none;
+
+}
+
 
 
 @media screen and (max-width: 696px) {
@@ -230,8 +239,12 @@ body {
 
     .rap {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
         padding: 0px;
+    }
+
+    #Explore {
+        display: block;
     }
 
     /* .ms-auto {
@@ -586,3 +599,19 @@ body {
     .navbar-expand-md .navbar-nav {}
 
 } */
+
+
+#filterbtn {
+    padding: 1rem;
+    border-radius: 0.7rem;
+    border: 1px solid black !important;
+    color: black;
+    background-color: white !important;
+    width: auto !important;
+    display: flex;
+    margin-left: 1rem;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+@media screen and (max-width: 856px) {}

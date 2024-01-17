@@ -8,6 +8,7 @@ const Review = require("../models/reviews.js");
 const { logedIn, isOwner } = require("../miderware.js");
 const multer = require("multer");
 const { storage } = require("../coludinaryConfig.js");
+const { log } = require("console");
 const upload = multer({ storage });
 
 
@@ -20,8 +21,26 @@ const upload = multer({ storage });
 
 // index Route
 router.get("/", wrapAsync(async (req, res, next) => {
-    const allListings = await listing.find({});
+    const allListings = await listing.find({}).populate("rewiews");
     res.render("listings/index.ejs", { allListings });
+    try {
+
+        for (const list of allListings) {
+            const populatedList = await listing.findById(list._id).populate("rewiews");
+            const reviews = populatedList.rewiews;
+            if (reviews.length != 0) {
+                const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+                avgRating = totalRating / reviews.length;
+            } else {
+                avgRating = 0;
+            }
+            avgRating = parseFloat(avgRating.toFixed(2))
+        }
+    }
+    catch (error) {
+        console.log(error);
+
+    }
 }));
 
 // -----------------------------------------------------------------//
@@ -68,12 +87,20 @@ router.put("/new", logedIn, upload.single('image'), wrapAsync(async (req, res) =
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     let allListings = await listing.findById(id).populate({ path: "rewiews", populate: "auther" }).populate("owner");
+    let avg = 0;
+    for (let i = 0; i < allListings.rewiews.length; i++) {
+        avg += allListings.rewiews[i].rating;
+    }
+    avg = avg / allListings.rewiews.length;
+    avg = parseFloat(avg.toFixed(2))
+    console.log(avg);
+
     if (!allListings) {
         req.flash("error", "Cannot find that listing!");
         res.redirect("/listings");
     }
     // console.log(allListings);
-    res.render("listings/show.ejs", { allListings });
+    res.render("listings/show.ejs", { allListings, avg });
 }));
 
 // -----------------------------------------------------------------//

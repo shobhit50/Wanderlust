@@ -244,6 +244,10 @@
                             <!-- this is for user detiles -->
                             <p>
                                 <i class="fa-regular fa-circle-user"></i> Hosted by <%= allListings.owner.username %>
+                                    <br>
+                                    <% if (avg) {%>
+                                        <%= avg %>
+                                            <% } %>
                             </p>
                             <hr>
                             <div>
