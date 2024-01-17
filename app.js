@@ -28,7 +28,7 @@ const userRoutes = require("./routes/user.js");  // this is for user route
 const port = process.env.PORT || 3001;
 const dbpass = process.env.DB_PASS || "";
 
-// data_Base Conection
+// data_Base Conection for local
 // main().then((res) => {
 //     console.log("connected to DB");
 // })
@@ -37,6 +37,8 @@ const dbpass = process.env.DB_PASS || "";
 // async function main() {
 //     await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
 // }
+
+// here the dynamic database
 
 
 
@@ -101,6 +103,8 @@ app.use((req, res, next) => {
 app.get("/", wrapAsync(async (req, res, next) => {
     const allListings = await listing.find({});
     res.render("listings/index.ejs", { allListings });
+})
+);
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 app.use("/", userRoutes);
