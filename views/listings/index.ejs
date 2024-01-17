@@ -185,7 +185,7 @@
                     </div>
                     <div class="filter" id="Filter">
                         <div><i class="fa-regular fa-snowflake"></i></div>
-                        <a href="/Search/Arctic" id="Link">Arctic</a>
+                        <a href="/Search/arctic" id="Link">Arctic</a>
                     </div>
                     <div class="filter" id="Filter">
                         <div><i class="fa-solid fa-mountain-city"></i></div>
@@ -204,7 +204,8 @@
                     </div>
                     <div class="filter" id="Filter">
                         <div><i class="fa-solid fa-tractor"></i></div>
-                        <p style="margin: 0;">Farms</p>
+                        <a href="/Search/Farms" id="Link">Farms</a>
+                        <!-- <p style="margin: 0;">Farms</p> -->
                     </div>
                     <div class="filter" id="Filter">
                         <div><i class="fa-solid fa-tree-city"></i></div>
@@ -263,9 +264,78 @@
                     </div>
                 </div>
 
+                <!-- modal space  -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"
+                    id="filterbtn">
+                    <i class="fa-solid fa-sliders" style="color: #545657;"></i>Filters</button>
 
+                <!-- end modal -->
             </div>
         </div>
+        <!-- modal form -->
+        <form form action="#" method="POST">
+            <div class="modal" tabindex="-1" id="myModal" style="z-index: 1051;">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Filters</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- here are redio butten -->
+                            <h5>Price</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="low_to_high"
+                                    id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Low to High
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="high_to_low"
+                                    id="flexRadioDefault2">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    High to Low
+                                </label>
+                            </div>
+                            <h5>Rating</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="top_to_low"
+                                    id="flexRadioDefault3">
+                                <label class="form-check-label" for="flexRadioDefault3">
+                                    Top to Low
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="low_to_top"
+                                    id="flexRadioDefault4">
+                                <label class="form-check-label" for="flexRadioDefault4">
+                                    Low to Top
+                                </label>
+                            </div>
+                            <!-- <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Any
+                        </label>
+                      </div> -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="filterbtn"
+                                style="border: none !important;
+                        color: white;
+                        background-color: #000000 !important; padding: 0.8rem !important;">Close</button>
+                            <button type="submit" class="btn btn-primary" id="filterbtn" style="
+                        border: none !important;
+                        color: white;
+                        background-color: #fe424d !important; padding: 0.8rem !important;">Save
+                                changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- modal end -->
         <!-- ------------------------------------------------------------------------------- -->
 
 
@@ -290,14 +360,46 @@
                                         <%= listing.title %>
                                     </b>
                                     <br>
-                                    <span style="display: flex;">
-                                        <% if (listing.price !==null && typeof listing.price==='number' ) { %>
-                                            ₹<%= listing.price.toLocaleString("en-in") %> / night
-                                                <i class="taxe-icon">&nbsp; +18%taxe</i>
-                                                <% } else { %>
-                                                    Price Not Available
-                                                    <% } %>
-                                    </span>
+                                    <%= listing.location %>, <%= listing.country %>
+                                            <span style="display: flex;">
+                                                <% if (listing.price !==null && typeof listing.price==='number' ) { %>
+                                                    ₹<%= listing.price.toLocaleString("en-in") %> / night
+                                                        <i class="taxe-icon">&nbsp; +18%tax</i>
+                                                        <i style="    
+                                               
+                                                
+                                                background: linear-gradient(137deg, rgb(255 255 255) 9%, rgb(205 205 205 / 50%) 100%);                                               
+                                                backdrop-filter: blur(2px);
+                                                box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.134);
+                                                font-size: 0.9rem;
+                                                padding: 0 0.1rem;
+                                                border-radius: 0.2rem;
+                                                color: #000000;
+                                                background-color: #2c2c2c;
+                                                position: absolute;
+                                                right: 0;">
+                                                            <% const reviews=listing.rewiews; %>
+                                                                <% if (reviews.length !==0) { %>
+                                                                    <% const totalRating=reviews.reduce((sum, review)=>
+                                                                        sum +
+                                                                        review.rating, 0); %>
+                                                                        <% avgRating=totalRating / reviews.length; %>
+                                                                            <!--  -->
+                                                                            <%avgRating=parseFloat(avgRating.toFixed(2));%>
+                                                                                &#9733;<%= avgRating %>
+                                                                                    <% } else { %>
+                                                                                        <% avgRating=0; %>
+                                                                                            &#9734;
+                                                                                            <%= avgRating %>
+                                                                                                <% } %>
+                                                                                                    <!--  -->
+                                                        </i>
+
+
+                                                        <% } else { %>
+                                                            Price Not Available
+                                                            <% } %>
+                                            </span>
                                 </p>
                             </div>
                         </div>
@@ -338,7 +440,7 @@
                 const link = filter.querySelector("a");
                 filter.addEventListener("click", () => {
                     console.log("It's working for 5555");
-                    // link.click();
+                    link.click();
                 });
             });
 
