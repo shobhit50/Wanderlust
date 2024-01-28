@@ -22,6 +22,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user.js");        // this is for user model
 const userRoutes = require("./routes/user.js");  // this is for user route
+const e = require('connect-flash');
 
 
 
@@ -123,10 +124,46 @@ app.use("/", userRoutes);
 //     // console.log(samplelisting);
 // })
 
-// this is for review route and delete route----------------------------------//
-// rating 
+
+// filter listinngs
 
 // -----------------------------------------------------------------//
+app.post("/Search/data", async (req, res) => {
+    try {
+        const value = req.body.search;
+        const allListings = await listing.find({ $or: [{ title: { $regex: value, $options: 'i' } }, { location: { $regex: value, $options: 'i' } }, { country: { $regex: value, $options: 'i' } }] });
+        res.render("listings/index.ejs", { allListings });
+    } catch (error) {
+        console.error("Error fetching city listings:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+app.post("/Search/filter", async (req, res) => {
+    try {
+        const price = req.body.price;
+        if (price == "low_to_high") {
+            const allListings = await listing.find({}).sort({ price: 1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+        else if (price == "high_to_low") {
+            const allListings = await listing.find({}).sort({ price: -1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+        else if (price == "rating_low_to_top") {
+            const allListings = await listing.find({}).populate("rewiews").sort({ "reviews.rating": - 1 });
+            res.render("listings/index.ejs", { allListings });
+        } else if (price == "rating_top_to_low") {
+            const allListings = await listing.find({}).populate("rewiews").sort({ "reviews.rating": 1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+    } catch (error) {
+        console.error("Error fetching city listings:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+);
+
+
 
 app.get("/Search/:category", async (req, res) => {
     try {
@@ -146,7 +183,6 @@ app.get("/Search/:category", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
 
 
 
