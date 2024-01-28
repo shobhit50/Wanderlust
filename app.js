@@ -22,6 +22,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user.js");        // this is for user model
 const userRoutes = require("./routes/user.js");  // this is for user route
+const e = require('connect-flash');
 
 
 
@@ -29,30 +30,30 @@ const port = process.env.PORT || 3001;
 const dbpass = process.env.DB_PASS || "";
 
 // data_Base Conection for local
-// main().then((res) => {
-//     console.log("connected to DB");
-// })
-//     .catch(err => console.log(err));
+main().then((res) => {
+    console.log("connected to DB");
+})
+    .catch(err => console.log(err));
 
-// async function main() {
-//     await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
-// }
+async function main() {
+    await mongoose.connect('mongodb://127.0.0.1:27017/airBnb');
+}
 
 // here the dynamic database
 
 
 
-async function main() {
-    const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
-    await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+// async function main() {
+//     const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
+//     await mongoose.connect(uri, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     });
 
-    console.log('Connected to MongoDB Atlas');
-}
+//     console.log('Connected to MongoDB Atlas');
+// }
 
-main().catch((err) => console.log(err));
+// main().catch((err) => console.log(err));
 
 app.use(cookiesParser());
 app.set("view engine", "ejs");
@@ -123,10 +124,46 @@ app.use("/", userRoutes);
 //     // console.log(samplelisting);
 // })
 
-// this is for review route and delete route----------------------------------//
-// rating 
+
+// filter listinngs
 
 // -----------------------------------------------------------------//
+app.post("/Search/data", async (req, res) => {
+    try {
+        const value = req.body.search;
+        const allListings = await listing.find({ $or: [{ title: { $regex: value, $options: 'i' } }, { location: { $regex: value, $options: 'i' } }, { country: { $regex: value, $options: 'i' } }] });
+        res.render("listings/index.ejs", { allListings });
+    } catch (error) {
+        console.error("Error fetching city listings:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+app.post("/Search/filter", async (req, res) => {
+    try {
+        const price = req.body.price;
+        if (price == "low_to_high") {
+            const allListings = await listing.find({}).sort({ price: 1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+        else if (price == "high_to_low") {
+            const allListings = await listing.find({}).sort({ price: -1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+        else if (price == "rating_low_to_top") {
+            const allListings = await listing.find({}).populate("rewiews").sort({ "reviews.rating": - 1 });
+            res.render("listings/index.ejs", { allListings });
+        } else if (price == "rating_top_to_low") {
+            const allListings = await listing.find({}).populate("rewiews").sort({ "reviews.rating": 1 });
+            res.render("listings/index.ejs", { allListings });
+        }
+    } catch (error) {
+        console.error("Error fetching city listings:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+);
+
+
 
 app.get("/Search/:category", async (req, res) => {
     try {
@@ -146,7 +183,6 @@ app.get("/Search/:category", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
 
 
 
