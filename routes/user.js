@@ -9,12 +9,12 @@ const { compile } = require("ejs-mate");
 
 
 
-router.get("/singup", (req, res) => {
+router.get("/signup", (req, res) => {
     res.render("user/singup.ejs");
 });
 
 
-router.post("/singup", wrapAsync(async (req, res) => {
+router.post("/signup", wrapAsync(async (req, res) => {
     try {
         const { email, username, password } = req.body;
         const user = new User({ email, username });
