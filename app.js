@@ -23,7 +23,7 @@ const localStrategy = require("passport-local");
 const User = require("./models/user.js");        // this is for user model
 const userRoutes = require("./routes/user.js");  // this is for user route
 const e = require('connect-flash');
-
+const MongoStore = require('connect-mongo');
 
 
 const port = process.env.PORT || 3001;
@@ -65,6 +65,9 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 const sessionOptions = {
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority"
+    }),
     secret: "thisisnotagoodsecrate",
     resave: false,
     saveUninitialized: true,
